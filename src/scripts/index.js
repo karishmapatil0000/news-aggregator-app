@@ -1,4 +1,4 @@
-const url ='http://newsapi.org/v2/everything?q=bitcoin&from=2020-04-07&sortBy=publishedAt&apiKey=4e5acce35bab4b4d9c29883a8ba9ded3';
+const url ='http://newsapi.org/v2/everything?q=bitcoin&from=2020-04-13&sortBy=publishedAt&apiKey=433163732d6742eea3411797f3342a3d';
 
 
 
@@ -38,7 +38,7 @@ $(document).ready(async function news(){
 $(document).ready(function(){ 
     $('#search').keypress(()=>{
       let searchField = $("#search").val();
-      const url1 = `https://newsapi.org/v2/everything?q=${searchField}&apiKey=4e5acce35bab4b4d9c29883a8ba9ded3`;
+      const url1 = `https://newsapi.org/v2/everything?q=${searchField}&apiKey=433163732d6742eea3411797f3342a3d`;
       
       if(searchField !== ""){
         $.ajax({
