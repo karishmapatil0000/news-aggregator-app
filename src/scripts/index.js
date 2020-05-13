@@ -1,73 +1,77 @@
-import  "../styles/index.css";
-import * as Search from "./scripts2/search";
-import * as searchView from "./Script3/searchView";
-import {elements, renderLoader, clearLoader } from "./Script3/base";
-
-const state = {};
+const url ='http://newsapi.org/v2/everything?q=bitcoin&from=2020-04-07&sortBy=publishedAt&apiKey=4e5acce35bab4b4d9c29883a8ba9ded3';
 
 
-const controlSearch = async () =>{
-    //Get QUery from the view
-    var query = searchView.getInput() ;
-    console.log(query);
 
-
-    if(query !== undefined || null || ' ')
-    {
-        state.search = new Search.Search(query);
-        //Prepare UI for results
-       // searchView.clearInput();
-       searchView.clearButton();
+$(document).ready(async function news(){
+	let response = await fetch(url);
+	let data = await response.json();
+	//debugger;
+	let news = ''
+	data.articles.forEach(article=> {
+		// put your loop code over here 
+				news+= `
+                    <li class="article">
+                       <img class="article-img" src="${article.urlToImage}"/>
+                       <h2 class="article-title">${article.title}</h2>
+                       <p class="article-description">${article.description}</p>
+                       <span class="article-author">${article.author}</span>
+                       <a class="article-link" href="${article.url}" target="_blank"></a>
+                    </li>
+                `;
+			});//iteration
+         /* let response = await fetch(url);
+		  let data = await response.json();
+        //x.then(res => res.json())
+		data.forEach((x) => {});
+        .then((articles) => {
+            let output="";
+            news.articles.forEach(article=>{
+                
+					   console.log("hii ".output);
+            });*/
+			
+            document.getElementById("news-articles").innerHTML=news;
+        })
        
-        searchView.clearResults();
-        searchView.clearNoresults();
-        renderLoader(elements.searchResList);
-
-        //Search for newsss
-        await state.search.getSearchResults();
-        clearLoader();
-        searchView.renderResults(state.search.results);
-        
-    }
-    else{
-        searchView.clearResults();
-        
-        await state.search.TopHeadings();
-        searchView.renderResults(state.search.results);
-
-    }
-   
-    //
-};
-
- elements.searchForm.addEventListener('keypress', e => {
-     if(e.keyCode === 13){
-         event.preventDefault();
-         controlSearch();
-     }
-});
-
-const topNews = async() => {
-    renderLoader(elements.searchResList);
-
-state.search = new Search.TopNews();
-    await state.search.TopHeadings();
-    clearLoader();
-    searchView.renderResults(state.search.results);
-    console.log(state.search.results);
-};
-topNews();
-
-elements.searchPagesBtn.addEventListener('click', e =>{
-     const btn = e.target.closest('.arrowContainer');
-     if(btn)
-     {
-
-     const gotoPage = parseInt(btn.dataset.goto , 10);
-     searchView.clearResults();
-     searchView.clearButton();
     
-   
-     searchView.renderResults(state.search.results , gotoPage);
-     }
+
+$(document).ready(function(){ 
+    $('#search').keypress(()=>{
+      let searchField = $("#search").val();
+      const url1 = `https://newsapi.org/v2/everything?q=${searchField}&apiKey=4e5acce35bab4b4d9c29883a8ba9ded3`;
+      
+      if(searchField !== ""){
+        $.ajax({
+          url: url1,
+          method: "GET",
+          dataType: "json",
+          
+            success: function(news){
+            let output1 = "";
+            let articles = news.articles;
+            
+            for(var art in articles){
+              output1 +=`
+                <li class="article">
+                   <img class="article-img" src="${art.urlToImage}"/>
+                   <h2 class="article-title">${art.title}</h2>
+                   <p class="article-description">${art.description}</p>
+                   <span class="article-author">${art.author}</span>
+                   <a class="article-link" href="${art.url}" target="_blank"></a>
+                </li>`;
+            }
+			console.log(output2);
+            if(output2 !== ""){
+              document.getElementById("news-articles").innerHTML=output2;  
+            }
+            else{
+				news_articles.innerHTML='<li class="not-found">No article was found based on the search.</li>';
+
+				        } 
+          }   
+        }); 
+      }
+	 
+    });
 });
+
